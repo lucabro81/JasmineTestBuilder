@@ -27,12 +27,13 @@
     "url": "https://github.com/lucabro81/JasmineTestBuilder/issues"
   },
   "homepage": "https://github.com/lucabro81/JasmineTestBuilder#readme",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@types/jasmine": "^2.5.40",
+    "jasmine": "^2.5.2",
+  },
+  "devDependencies": {
     "@types/requirejs": "^2.1.28",
     "gulp-replace": "^0.5.4",
-    "jasmine": "^2.5.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-requirejs": "^1.0.0-rc1",
