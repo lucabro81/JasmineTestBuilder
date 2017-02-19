@@ -18,8 +18,8 @@
     "url": "git+https://github.com/lucabro81/JasmineTestBuilder.git"
   },
   "keywords": [
-    "linked-marix",
-    "infinite-scroll-omnidirectional"
+    "jasmine",
+    "test-builder"
   ],
   "author": "Luca Brognara",
   "license": "ISC",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/lucabro81/JasmineTestBuilder#readme",
   "dependencies": {
     "@types/jasmine": "^2.5.40",
-    "jasmine": "^2.5.2",
+    "jasmine": "^2.5.2"
   },
   "devDependencies": {
     "@types/requirejs": "^2.1.28",
