@@ -1,0 +1,6 @@
+.idea
+node_modules
+dist/js
+spec/app
+spec/**/*.js
+package
