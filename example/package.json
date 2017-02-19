@@ -1,0 +1,28 @@
+{
+  "name": "test_jtb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jasmine-test-builder": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/requirejs": "^2.1.28",
+    "gulp-replace": "^0.5.4",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-requirejs": "^1.0.0-rc1",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-typescript": "^3.1.3",
+    "gulp-uglify": "^2.0.0",
+    "signals": "^1.0.0",
+    "typescript": "^2.1.4",
+    "typings": "^2.1.0",
+    "yargs": "^6.5.0"
+  }
+}
