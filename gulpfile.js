@@ -52,8 +52,8 @@ gulp.task('build-app', ['__typescript-app', '__typescript-config'], function() {
     console.log("app built");
 });
 
-gulp.task('build-npm', function() {
-    return tsCommonJS('src/core/**/*.ts', './package', true);
+gulp.task('build-npm', ['__move-js'], function() {
+    return tsCommonJS(['src/core/**/*.ts'], './package', true);
 });
 
 gulp.task('build-all', ['build-app', 'build-test'], function() {
@@ -91,4 +91,9 @@ gulp.task('__typescript-commonjs', function() {
 
 gulp.task('__typescript-tests', ['__typescript-commonjs'], function() {
     return tsCommonJS('spec/**/*.ts', 'spec/', false);
+});
+
+gulp.task('__move-js', function() {
+    gulp.src('src/**/*.js')
+        .pipe(gulp.dest('./package'));
 });
