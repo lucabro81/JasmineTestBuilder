@@ -1,6 +1,6 @@
 {
   "name": "jasmine-test-builder",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Test builder based on Jasmine",
   "main": "package/JasmineTestBuilder.js",
   "types": "package/JasmineTestBuilder.d.ts",
