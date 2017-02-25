@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander');
-var fs = require('fs');
+var fs = require('fs-extra');
 var exec = require('child_process').exec;
 
 ///////////////////////////////
@@ -49,12 +49,27 @@ function _run(program) {
 
     exec(command, function (error, stdout, stderr) {
         if (error !== null) {
-            console.log('Exec error: ' + error);
+            console.log('Exec error: ' + error, stderr);
+            console.log(stdout);
         }
         else {
             console.log(stdout);
         }
     });
+}
+
+/**
+ *
+ * @returns {string}
+ * @private
+ */
+function _contentTestFile() {
+    return "/*\nEXAMPLE:\n\nimport {JasmineTestBuilder} from 'jasmine-test-builder';\n\n" +
+        "var tb:JasmineTestBuilder<T> = new JasmineTestBuilder<T>();\n\n" +
+        "tb.init('Test suite name', T);\n" +
+        "\ttb.withMethod('methodName', [paramsArray]);\n" +
+        "\ttb.result('testResult');\n" +
+        "tb.run();\n*/"
 }
 
 /**
@@ -64,15 +79,31 @@ function _run(program) {
  * @private
  */
 function _init(program) {
+    fs.removeSync('spec');
     exec("jasmine init", function (error, stdout, stderr) {
         if (error !== null) {
             console.log('Exec error: ' + error);
         }
         else {
-            console.log("Test enviroment initialized.");
-            fs.mkdirSync('spec/test_src');
-            fs.mkdirSync('spec/test_src/assets');
-            fs.mkdirSync('spec/app');
+            fs.mkdirsSync('spec/test_out');
+            fs.mkdirsSync('spec/test_src');
+            fs.mkdirsSync('spec/test_src/assets');
+            fs.mkdirsSync('spec/app');
+
+            fs.writeFile('spec/test_src/assets/dummy_data.ts', '', function(err) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                fs.writeFile('spec/test_src/test.spec.ts', _contentTestFile(), function(err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("Test enviroment initialized.");
+                });
+            });
+
+
         }
     });
 }
@@ -84,12 +115,28 @@ function _init(program) {
  * @param stderr
  * @private
  */
-function _buildTestExecHandler(error, stdout, stderr) {
+function _buildAppTestExecHandler(error, stdout, stderr) {
     if (error !== null) {
         console.log('Exec error: ' + error);
     }
     else {
-        console.log("test built")
+        console.log("test app built")
+    }
+}
+
+/**
+ *
+ * @param error
+ * @param stdout
+ * @param stderr
+ * @private
+ */
+function _buildTestsExecHandler(error, stdout, stderr) {
+    if (error !== null) {
+        console.log('Exec error: ' + error);
+    }
+    else {
+        console.log("tests built")
     }
 }
 
@@ -98,14 +145,29 @@ function _buildTestExecHandler(error, stdout, stderr) {
  * @param program
  * @private
  */
-function _buildTests(program) {
-    if (program.source) {
-        exec("tsc --rootDir='" + program.source +
-                "' --outDir='spec/app' --declaration=true --declarationDir='spec/app'",
-                function(error, stdout, stderr) {
-                    _buildTestExecHandler(error, stdout, stderr);
-                })
+function _buildAppTest(program) {
+    if (program.rootDir) {
+
+        exec("tsc " + program.rootDir + "/**/*.ts " +
+            "--outDir spec/app " +
+            "--module CommonJS " +
+            "--declaration true " +
+            "--declarationDir spec/app",
+            function(error, stdout, stderr) {
+                _buildAppTestExecHandler(error, stdout, stderr);
+            }
+        )
     }
+}
+
+function _buildTests() {
+    exec("tsc ./spec/test_src/**/*.ts ./spec/test_src/*.ts " +
+        "--outDir spec/test_out " +
+        "--module CommonJS ",
+        function(error, stdout, stderr) {
+            _buildTestsExecHandler(error, stdout, stderr);
+        }
+    )
 }
 
 /////////////////////////////////
@@ -117,6 +179,7 @@ function _buildTests(program) {
 var run = {};
 run['run'] = _run;
 run['init'] = _init;
+run['build-test-app'] = _buildAppTest;
 run['build-tests'] = _buildTests;
 
 program
@@ -126,7 +189,7 @@ program
     .option('-f, --filter [filter]', 'filter specs to run only those that match the given string', null, null)
     .option('--helper [helper]', 'load helper files that match the given string', null, null)
     .option('--stopOnFailure [stopOnFailure]', '[true|false] stop spec execution on expectation failure', null, null)
-    .option('-s, --source <source>', 'path of files to tests', null, null)
+    .option('-s, --rootDir <rootDir>', 'path of files to tests', null, null)
     .action(function(command) {
         run[command](program);
     })
