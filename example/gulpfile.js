@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     yargs = require('yargs');
-    replace = require('gulp-replace');
+replace = require('gulp-replace');
 
 ///////////////////////////////////////////////
 //////////////////// UTILS ////////////////////
@@ -78,7 +78,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('__typescript-app', function() {
-   return tsToFile('app', 'dist/js/');
+    return tsToFile('app', 'dist/js/');
 });
 
 gulp.task('__typescript-config', function() {
