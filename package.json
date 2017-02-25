@@ -1,6 +1,6 @@
 {
   "name": "jasmine-test-builder",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Test builder based on Jasmine",
   "main": "package/JasmineTestBuilder.js",
   "types": "package/JasmineTestBuilder.d.ts",
@@ -22,7 +22,8 @@
   },
   "keywords": [
     "jasmine",
-    "test-builder"
+    "test-builder",
+    "typescript"
   ],
   "author": "Luca Brognara",
   "license": "ISC",
